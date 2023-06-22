@@ -1,9 +1,16 @@
+using Multi_Tenancy.settings;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.Configure<TenantSettings>(builder.Configuration.GetSection(nameof(TenantSettings)));
+
+TenantSettings options = new();
+builder.Configuration.GetSection(nameof(TenantSettings)).Bind(options);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
