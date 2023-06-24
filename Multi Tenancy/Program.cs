@@ -1,4 +1,7 @@
-using Multi_Tenancy.settings;
+
+
+using Microsoft.EntityFrameworkCore;
+using Multi_Tenancy.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,10 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-builder.Services.Configure<TenantSettings>(builder.Configuration.GetSection(nameof(TenantSettings)));
 
-TenantSettings options = new();
-builder.Configuration.GetSection(nameof(TenantSettings)).Bind(options);
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+//builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddTenancy(builder.Configuration);
+
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
